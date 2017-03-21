@@ -1,0 +1,7 @@
+
+
+.txt-bonne{-fx-font-size: 20px;-fx-font-family: "Ariel";-fx-fill: green;-fx-font-weigh: bold;-fx-text-align: center;}
+.txt-mauvaise{-fx-margin-left: 25px;-fx-font-size: 20px;-fx-font-family: "Ariel";-fx-fill: red;-fx-font-weigh: bold;-fx-text-align: center;}
+.btn{-fx-text-fill: #FFFFFF;-fx-background-color: #000000;-fx-padding: 8;}
+.btn:hover{-fx-text-fill: #FFFFFF;-fx-background-color: #999999;-fx-padding: 7;-fx-cursor: hand;}
+.txt-final{-fx-margin-left: 25px;-fx-fill: #000000;-fx-font-weigh: bold;-fx-text-align: center;}
