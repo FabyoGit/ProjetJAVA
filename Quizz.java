@@ -5,10 +5,6 @@
  */
 package multijeux;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -27,39 +23,30 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-/**
- *
- * @author stag Fabyo
- */
-public class Calcul extends Parent
+
+public class Quizz extends Parent
 {
-    private int resultat = 0;
+
+ 
+    
+    private String resultat = "";
     private String op = "";
-    private int reponse = 0;
-    private int nb1 = 0;
-    private int nb2 = 0;
+    private String reponse = "";
+    
+   
     private double points = 0;
     
-    private Niveau niveau = Niveau.getInstance();
+    Niveau niveau = Niveau.getInstance();
+    
     private boolean flagRepondu = false;
     private Alert alert = new Alert(AlertType.WARNING);
     private String txtNiveau;
     
     
-    public Calcul()
+    public Quizz()
     {
-       this.resultat = resultat;
-       this.op = op;
-       this.reponse = reponse;
-       this.nb1 = nb1;
-       this.nb2 = nb2;
-       this.points = points;
-       this.niveau = niveau;
-       this.flagRepondu = flagRepondu;
-       this.alert = alert;
-       this.txtNiveau = txtNiveau;
        
-       
+        
         
         initialiser();
       
@@ -69,11 +56,11 @@ public class Calcul extends Parent
         pane.setVgap(10);
         pane.setPadding(new Insets(25, 25, 25, 25));
        
-        //Scene scene = new Scene(pane, 300, 275);
-
-       pane.getStylesheets().add("multijeux/styleCalc.css");
+        
+        pane.getStylesheets().add("Calcule/styleCalc.css");
         
         if(niveau.getNiveau() == 1){
+       
         txtNiveau = "------------- NIVEAU I -------------";
         }else{
         txtNiveau = "------------- NIVEAU II ------------";
@@ -86,23 +73,32 @@ public class Calcul extends Parent
         pane.add(sceneTitle, 0, 0, 2, 1);
         
        
-        Label lblQuestion = new Label(getLabel());
+        Label lblQuestion = new Label("Question");
         pane.add(lblQuestion, 0, 1);
         
         
-        final TextField totalField = new TextField();
-        pane.add(totalField, 1, 1);
+        final TextField enonceField = new TextField();
+        pane.add(enonceField, 1, 1);
+        
+        Label resReponse = new Label("Réponse");
+        pane.add(resReponse, 0, 2);
+        
+        
+        final TextField reponseField = new TextField();
+        pane.add(reponseField, 1, 2);
       
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(0, 0, 0, -15));
         hbox.setSpacing(10);    
         
-        Button calculateButton = new Button("Entrer");        
+        Button VerifierButton = new Button("Vérifier"); 
+        Button SolutionButton = new Button("Solution");
         Button SuivantButton = new Button("Suivant");    
         
-            hbox.getChildren().addAll(calculateButton, SuivantButton);
+        hbox.getChildren().addAll(VerifierButton, SolutionButton, SuivantButton);
 
-        calculateButton.getStyleClass().add("btn");
+        VerifierButton.getStyleClass().add("btn");
+        SolutionButton.getStyleClass().add("btn");
         SuivantButton.getStyleClass().add("btn");
         
         //pane.add(calculateButton, 0,4);
@@ -131,46 +127,39 @@ public class Calcul extends Parent
      
         Label lbPoints = new Label(getPoints());
         pane.add(lbPoints, 1,6,1,1);
+               
         
-        
-     this.getChildren().add(pane);
-        
-        
-        
-        calculateButton.setOnAction(new EventHandler<ActionEvent>() {
+        VerifierButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent t) {
                 
-                String regex = "[a-zA-Z]";
-               int NB = (totalField.getText()).equals("") || isAlphabetic(totalField.getText().toString()) ? 0 : Integer.parseInt(totalField.getText());
+               // String regex = "[a-zA-Z]";
+               String REPONSE = reponseField.getText().toLowerCase();
              
-               if(NB == resultat){
-                   finalMessage.setText("Response : "+ NB);
+               if(REPONSE.contains(resultat)){
+                   finalMessage.setText("Response : "+ REPONSE);
                    mauvaiseResposte.setVisible(false); 
                    bonneResposte.setVisible(true);
                   flagRepondu = true;
                   aPoints();
        
                 }else{
-                   finalMessage.setText("Response : "+ NB);
+                   finalMessage.setText("Response : "+ REPONSE);
                    bonneResposte.setVisible(false);
                    mauvaiseResposte.setVisible(true);
                 }
                    
                 
-                calculateButton.setDisable(true);
-                totalField.clear();
-                lblQuestion.setText(getLabel());
+                VerifierButton.setDisable(true);
+                reponseField.clear();
+                lblQuestion.setText("Question");
                 lbPoints.setText(getPoints());
             }
         });
         
         
-        
-        
-        
-        
+      //**********************GESTION DES EVENEMENTS*******************//        
         
         SuivantButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -178,7 +167,7 @@ public class Calcul extends Parent
             public void handle(ActionEvent t) {
                 
                   if(!flagRepondu){
-                      String txt = "REPONSE : " + getLabel()+  resultat;
+                      String txt = "REPONSE : " + "énoncé"+  resultat;
                         alert.setTitle("Erreur");
                         alert.setHeaderText("Resultat");
                         alert.setContentText(txt);
@@ -194,20 +183,24 @@ public class Calcul extends Parent
                   
                   //Reinitialiser Valeurs
                   flagRepondu = false;
-                  calculateButton.setDisable(false); 
+                  VerifierButton.setDisable(false); 
                   bonneResposte.setVisible(false);
                   mauvaiseResposte.setVisible(false); 
-                  totalField.clear();
+                  reponseField.clear();
                   
-                  //Reinitialiser Calcule et Label
+                  //Reinitialiser Question et Label
                   initialiser();
-                  lblQuestion.setText(getLabel());
+                  lblQuestion.setText("enonce");
                   lbPoints.setText(getPoints());
+                  
+                  
 
             }
         });
 
-     
+            this.getChildren().add(pane);
+        
+        
     }
     
     
@@ -218,10 +211,12 @@ public class Calcul extends Parent
     public void initialiser(){
     
         if(niveau.getNiveau() == 1){
-            calculerNiveauI();        
+            questionNiveauI();        
         }else{
-            calculerNiveauII();
+            questionNiveauII();
         }
+        
+       
                
    }
 
@@ -237,120 +232,52 @@ public class Calcul extends Parent
         this.points-= n ;
     }
     
-    public int getResultat(){
+    public String getResultat(){
    
         return this.resultat;
     }
     
-   public String getLabel(){
-    
-        return  this.nb1 + " " + this.op + " " + this.nb2 + "  = ";
-
-    }
+//   public String getLabel(){
+//    
+//        return  this.nb1 + " " + this.op + " " + this.nb2 + "  = ";
+//
+//    }
    
     
     
-    public void calculerNiveauI(){
-    
-       Random gerador = new Random();
-        this.nb1 = gerador.nextInt(10);
-        this.nb2 = gerador.nextInt(10);
-       if(nb1 > nb2){
-             op= "-";
-            resultat = nb1-nb2;  
-        }else{
-             op= "+";
-             resultat = nb1+nb2;  
-        }
+    public void questionNiveauI(){
+        
+         // Les instances de DAO
+       // DAO<Question> questiondao = DAOFactory.getQuestionDAO();
+       // DAO<User> userdao = DAOFactory.getUserDAO();
+        
+        System.out.println("Requêtes de sélection sur le niveau 1");
+      
+        
+      
        
     }
    
-    
-   
-    public void calculerNiveauII(){
-    
-        Random gerador = new Random();
-        this.nb1 = gerador.nextInt(1000);
-        this.nb2 = gerador.nextInt(1000);
- 
-        switch(Operateur.randomOperateur().toString()){
+    public void questionNiveauII(){
+        
+         // Les instances de DAO
+       // DAO<Question> questiondao = DAOFactory.getQuestionDAO();
+       // DAO<User> userdao = DAOFactory.getUserDAO();
+        
+        System.out.println("Requêtes de sélection sur le niveau 2");
+      
+        
+      
        
-            case "*" : this.nb1 = gerador.nextInt(10);
-                        if(nb1 == 0)nb1=1;
-                        resultat = nb1 * nb2;
-                        op = "x";
-                break;
-            case "-" : resultat = nb1 - nb2;
-                        op = "-";
-                break;
-           default: resultat = nb1 + nb2;
-                        op = "+";
-                break;
-        }
-       
-
-   }
-    
-    
-   
-   static enum Operateur {SOMME("+"), SOUSTRACTION("-"), MULTIPLICATION("*");
-
-                private final String txt;
-
-		private  Operateur(String txt) {
-			this.txt = txt;
-		}
-
-		@Override
-		public String toString() {
-			return txt;
-		}
- 
-               private static final List<Operateur> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
-                private static final int SIZE = VALUES.size();
-                private static final Random RANDOM = new Random();
-
-                public static Operateur randomOperateur()  {
-                
-                   return VALUES.get(RANDOM.nextInt(SIZE));
-               }
     }
     
- 
     
    
     public boolean IsTrue(){
        
-        return (this.resultat == this.reponse)? true : false;
+        return this.resultat.equalsIgnoreCase(reponse) ? true : false;
    }
   
-    
-   
-    public boolean isAlphabetic(String temp){
-        int i = 0;
-   
-        while( i < temp.length()) {
-          if (Character.isAlphabetic(temp.charAt(i)))
-               return true;
-      
-          i++;
-    }
-         
-    return false;
-    
-    }
-    
-    
-    /**
-+     * The main() method is ignored in correctly deployed JavaFX application.
-+     * main() serves only as fallback in case the application can not be
-+     * launched through deployment artifacts, e.g., in IDEs with limited FX
-+     * support. NetBeans ignores main().
-+     *
-+     * @param args the command line arguments
-+     */
-    /*public static void main(String[] args) {
-+        launch(args);
-+    }*/
-
+     
+ 
 }
