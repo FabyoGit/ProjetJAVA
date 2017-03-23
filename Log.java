@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package multijeux.Administration;
 
 /**
  *
@@ -78,7 +78,7 @@ public class Log extends Parent
        
      
 
-        pane.add(hbox, 1,1);
+        pane.add(hbox, 1,4);
         
         
                      
