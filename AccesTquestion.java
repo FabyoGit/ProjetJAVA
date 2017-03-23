@@ -3,7 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+
+
+/**
+ *
+ * @author stag
+ */
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package multijeux.Administration;
 
 /**
  *
@@ -11,6 +22,7 @@ package beans;
  */
 
 
+import Onglet1.Pinceau;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -33,7 +45,8 @@ public class AccesTquestion extends Parent
     public AccesTquestion()
     {
        
-        BorderPane borderpane = new BorderPane();
+          BorderPane bp1= new BorderPane();
+//        BorderPane bp2 = new BorderPane();
         
           ////////////////////////CREATION/////////////////////////////
         
@@ -62,10 +75,10 @@ public class AccesTquestion extends Parent
         pane.add(enonceField, 1, 2);
         
         Label resReponse = new Label("Reponse");
-        pane.add(resReponse, 0, 2);
+        pane.add(resReponse, 0, 3);
         
         final TextField reponseField = new TextField();
-        pane.add(reponseField, 1, 2);
+        pane.add(reponseField, 1, 3);
         
       
         HBox hbox = new HBox();
@@ -73,49 +86,52 @@ public class AccesTquestion extends Parent
         hbox.setSpacing(10);    
         
         Button CreateButton = new Button("ENREGISTRER"); 
-          
+        
         
         hbox.getChildren().addAll(CreateButton);
 
         CreateButton.getStyleClass().add("btn");
-       
+        pane.add(hbox, 1, 4);  
      
 
-        pane.add(hbox, 1,4);
+       
+        
+        //bp1.setTop(pane);
         
         ////////////////////////MODIFICATION/////////////////////////////
-        
-        GridPane panem = new GridPane();
-        panem.setAlignment(Pos.CENTER);
-        panem.setHgap(10);
-        panem.setVgap(10);
-        panem.setPadding(new Insets(25, 25, 25, 25));
+//        
+//        GridPane panem = new GridPane();
+//        panem.setAlignment(Pos.CENTER);
+//        panem.setHgap(10);
+//        panem.setVgap(10);
+//        panem.setPadding(new Insets(25, 25, 25, 25));
        
         
         //pane.getStylesheets().add("Calcule/styleCalc.css");
                            
-        ChoiceBox<Quizz> enonce = new ChoiceBox<>();  
+        ChoiceBox<Pinceau> enonce = new ChoiceBox<>();
+        pane.add(enonce, 0, 5);
        // enonce.getItems().addAll(enonceliste.getContent());
        // enonce.getSelectionModel().select(obj);
        
         // Les objets suivants sont utilisés une fois le choix fait
         Label resNiveaum = new Label("Niveau");
-        pane.add(resNiveaum, 0, 1);
+        pane.add(resNiveaum, 0, 6);
         
         final TextField niveaumField = new TextField();
-        pane.add(niveaumField, 1, 1);
+        pane.add(niveaumField, 1, 6);
         
         Label resEnoncem = new Label("Enoncé");
-        pane.add(resEnoncem, 0, 2);
+        pane.add(resEnoncem, 0, 7);
         
         final TextField enoncemField = new TextField();
-        pane.add(enoncemField, 1, 2);
+        pane.add(enoncemField, 1, 7);
         
         Label resReponsem = new Label("Reponse");
-        pane.add(resReponsem, 0, 2);
+        pane.add(resReponsem, 0, 8);
         
         final TextField reponsemField = new TextField();
-        pane.add(reponsemField, 1, 2);
+        pane.add(reponsemField, 1, 8);
         
       
         HBox hboxm = new HBox();
@@ -128,15 +144,16 @@ public class AccesTquestion extends Parent
         hboxm.getChildren().addAll(ModifButton);
 
         ModifButton.getStyleClass().add("btn");
-       
+       pane.add(hboxm, 1, 9);  
      
 
-        panem.add(hboxm, 1,4);
+        
+       bp1.setBottom(pane);
         
         ///////////////////////RATTACHEMENT AU BORDERPANE//////////////////
+      //  this.getChildren().addAll(bp1,bp2);
         
-        borderpane.setTop(pane);
-        borderpane.setBottom(panem);
+       //.getChildren().addAll(pane,panem);
         
         
         //**********************GESTION DES EVENEMENTS*******************//   
